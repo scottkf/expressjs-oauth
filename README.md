@@ -1,9 +1,9 @@
 ## To install
 
-- git clone https://github.com/scottkf/expressjs-oauth.git
-- cd expressjs-oauth
-- npm install
-- node app.js
+    git clone https://github.com/scottkf/expressjs-oauth.git
+    cd expressjs-oauth
+    npm install
+    node app.js
 
 ## Further instructions
 

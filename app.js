@@ -1,10 +1,11 @@
-
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , ObjectId = mongoose.SchemaTypes.ObjectId;
   
 var conf = require('./config/oauth_providers');
-var UserSchema = new Schema({})
+var UserSchema = new Schema({
+  role: [String]
+})
 	, User;
 var mongooseAuth = require('mongoose-auth');
 
@@ -42,6 +43,8 @@ UserSchema.plugin(mongooseAuth, {
   }
 });
 
+
+
 mongoose.model('User', UserSchema);
 
 mongoose.connect('mongodb://localhost/example');
@@ -50,6 +53,30 @@ User = mongoose.model('User');
 
 var express = require('express');
 var app = express.createServer();
+
+abilities = {
+  editor: {
+    index: ['read'],
+    protected: ['read']
+  },
+  default: {
+    index: ['read'],
+    protected: ['read'],
+  }
+}
+var ability = require('./lib/index');
+ability.add(abilities);
+
+// abilities = {
+//   editor: {
+//     index: ['read'],
+//     protected: ['read']
+//   },
+//   guest: {
+//     index: ['read']
+//   }
+// }
+// var ability = require('./lib/index')(abilities);
 
 app.configure(function() {
   app.set('views', __dirname + '/views');
@@ -60,12 +87,19 @@ app.configure(function() {
   app.use(mongooseAuth.middleware());
 });
 
+ability.addHelpers(app);
+mongooseAuth.helpExpress(app);
+
+
 app.get('/', function(req, res){
 	res.render('index');
 });
 
+app.get('/protected', function(req, res) {
+  console.log(authorize(req.user, 'read', 'protected'));
+  res.render('protected');
+});
 
 
-mongooseAuth.helpExpress(app);
 
 app.listen(3000);

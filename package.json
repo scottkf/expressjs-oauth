@@ -8,6 +8,7 @@
   , "express":          ">= 2.2.2"
   , "mongoose":         ">= 1.3.6"
   , "mongodb":          ">= 0.9.4-5"
+  , "connect":          ">= 1.7.0"
   , "connect-mongodb":  ">= 0.3.0"
   , "mongoose-auth":    ">= 0.0.2"
   }

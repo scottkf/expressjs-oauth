@@ -61,22 +61,21 @@ abilities = {
   },
   default: {
     index: ['read'],
-    protected: ['read'],
+    // protected: ['read']
   }
 }
-var ability = require('./lib/index');
+var ability = require('./lib/ability-js');
 ability.add(abilities);
 
-// abilities = {
-//   editor: {
-//     index: ['read'],
-//     protected: ['read']
-//   },
-//   guest: {
-//     index: ['read']
-//   }
-// }
-// var ability = require('./lib/index')(abilities);
+ability.configure({
+  // whether or not to redirect
+  redirect: true,
+  // where to redirect
+  redirect_to: '/',
+  // the name of our everyauth role
+  role_name: 'role'
+})
+
 
 app.configure(function() {
   app.set('views', __dirname + '/views');
@@ -92,12 +91,12 @@ mongooseAuth.helpExpress(app);
 
 
 app.get('/', function(req, res){
-	res.render('index');
+	authorize() || res.render('index');
 });
 
 app.get('/protected', function(req, res) {
-  console.log(authorize(req.user, 'read', 'protected'));
-  res.render('protected');
+  // console.log(authorize('read', 'protected'));
+  authorize() || res.render('protected');
 });
 
 

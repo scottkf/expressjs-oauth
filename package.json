@@ -11,6 +11,7 @@
   , "connect":          ">= 1.7.0"
   , "connect-mongodb":  ">= 0.3.0"
   , "mongoose-auth":    ">= 0.0.2"
+  , "ability":          ">= 0.0.1"
   }
 , "scripts":
   { "test": "nodeunit test/*/*"

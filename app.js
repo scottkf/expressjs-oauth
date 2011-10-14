@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
   
 var conf = require('./config/oauth_providers');
 var UserSchema = new Schema({
-  role: [String]
+  role: String
 })
 	, User;
 var mongooseAuth = require('mongoose-auth');
@@ -64,8 +64,9 @@ abilities = {
     // protected: ['read']
   }
 }
-var ability = require('./lib/ability-js');
+var ability = require('ability')();
 ability.add(abilities);
+
 
 ability.configure({
   // whether or not to redirect
@@ -86,17 +87,19 @@ app.configure(function() {
   app.use(mongooseAuth.middleware());
 });
 
+app.dynamicHelpers({ messages: require('express-messages') });
 ability.addHelpers(app);
 mongooseAuth.helpExpress(app);
 
 
 app.get('/', function(req, res){
-	authorize() || res.render('index');
+	authorize();
+	res.render('index');
 });
 
 app.get('/protected', function(req, res) {
-  // console.log(authorize('read', 'protected'));
-  authorize() || res.render('protected');
+  authorize();
+  res.render('protected');
 });
 
 

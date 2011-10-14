@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
   
 var conf = require('./config/oauth_providers');
 var UserSchema = new Schema({
-  role: String
+  role  : String
 })
 	, User;
 var mongooseAuth = require('mongoose-auth');
